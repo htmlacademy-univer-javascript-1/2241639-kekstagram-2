@@ -5,7 +5,8 @@ function getRandomInt(min, max) {
 }//первая функция (рандомное число в диапазоне)
 
 function truncate(str, maxlength) {
-  if(str.length <= maxlength){return (true);}else{return (false);}
+  if(str.length <= maxlength){return (true);}
+  {return (false);}
 } //вторая функция (на длину строки)
 
 getRandomInt(1,2);//2 бесполезные строки
