@@ -2,7 +2,7 @@ function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
-}//первая функция (рандомное число в диапазоне)
+}//рандомное число в диапазоне
 
 function truncate(str, maxlength) {
   if(str.length <= maxlength){return (true);}
@@ -16,13 +16,13 @@ function getRandomArrayElement (elements){
 const getRandomUniqNumber = function(from, to) {
   const previousValues = [];
   return function () {
-    let currentValue = randomNumber(from, to);
+    let currentValue = getRandomInt(from, to);
     if (previousValues.length >= (to - from + 1)) {
-      console.error(`Перебраны все числа из диапазона от ${  from  } до ${  to}`);
+      alert.error(`Перебраны все числа из диапазона от ${  from  } до ${  to}`);
       return null;
     }
     while (previousValues.includes(currentValue)) {
-      currentValue = randomNumber(from, to);
+      currentValue = getRandomInt(from, to);
     }
     previousValues.push(currentValue);
     return currentValue;
@@ -65,5 +65,7 @@ const createDescriptionOfPhoto = function() {
   };
 };
 
-getRandomInt(1,2);//2 бесполезные строки
+//getRandomInt(1,2);//бесполезные пока строки
 truncate('бесполезный вызов чтоб ошибку не выдавало',38);
+createDescriptionOfPhoto();
+generateCommentId();
