@@ -17,3 +17,5 @@ simularMiniatures.forEach(({url, likes, comments})=>{
   miniaturesFragment.appendChild(miniatures);
 });
 miniaturesList.appendChild(miniaturesFragment);
+
+export { miniaturesList };
