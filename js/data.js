@@ -1,4 +1,4 @@
-import {getRandomInt, getRandomArrayElement, getRandomUniqNumber} from './tools.js';
+import {getRandomInt, getRandomArrayElement, getRandomUniqNumber} from './utils.js';
 
 const MESSAGES = [
   'Всё отлично!',
@@ -15,15 +15,19 @@ const NAMES = [ 'Катя' , 'ГрЫгорий', 'Лиза', 'Данил', 'Ви
   'Соня', 'Биба', 'Жанна', 'Лёша', 'Руслан',
   'Наташа', 'Боба', 'Анжелика', 'Рик', 'Богдан' ];
 
-const generateId = getRandomUniqNumber(1, 25);
-const generatePhotoId = getRandomUniqNumber(1, 25);
-const generateCommentId = getRandomUniqNumber(1, 100);
+const PHOTOLENGTH = 25;
+const NUMBERCOMMENT = 1000;
+
+const generateId = getRandomUniqNumber(1, PHOTOLENGTH);
+const generatePhotoId = getRandomUniqNumber(1, PHOTOLENGTH);
+const generateCommentId = getRandomUniqNumber(1, NUMBERCOMMENT);
+const IMGS = ['img/avatar-1.svg','img/avatar-2.svg','img/avatar-3.svg','img/avatar-4.svg','img/avatar-5.svg','img/avatar-6.svg'];
 
 const createComment = () => ({
   id: generateCommentId(),
-  avatar: `img/avatar-${getRandomInt(1, 6)}.svg`,
-  message: getRandomArrayElement(MESSAGES),
-  name: getRandomArrayElement(NAMES)
+  avatar: getRandomArrayElement(0, IMGS.length - 1),
+  message: getRandomArrayElement(0, MESSAGES.length - 1),
+  name: getRandomArrayElement(0,NAMES.length - 1)
 });
 
 const createDescriptionOfPhoto = function() {
@@ -32,7 +36,9 @@ const createDescriptionOfPhoto = function() {
     url: `photos/${generatePhotoId()}.jpg`,
     description: 'Описание картинки',
     likes: getRandomInt(15, 200),
-    comments: Array.from({length: getRandomInt(1, 6)}, createComment),
+    comments: Array.from({length: getRandomInt(1, 10)}, createComment),
   };
 };
-export {createDescriptionOfPhoto};
+
+const numberPhotoUsers = Array.from({ length: PHOTOLENGTH }, createDescriptionOfPhoto);
+export {numberPhotoUsers};
