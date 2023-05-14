@@ -41,4 +41,4 @@ const createDescriptionOfPhoto = function() {
 };
 
 const numberPhotoUsers = Array.from({ length: PHOTOLENGTH }, createDescriptionOfPhoto);
-export {numberPhotoUsers};
+export { numberPhotoUsers, createComment, createDescriptionOfPhoto };
