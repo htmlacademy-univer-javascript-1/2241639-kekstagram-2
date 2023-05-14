@@ -30,4 +30,6 @@ const getRandomUniqNumber = function(from, to) {
   };
 };//получение уникального номера
 
-export {getRandomInt, truncate, getRandomArrayElement, getRandomUniqNumber};
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+export {getRandomInt, truncate, getRandomArrayElement, getRandomUniqNumber, isEscapeKey};
