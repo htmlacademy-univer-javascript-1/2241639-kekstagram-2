@@ -16,7 +16,7 @@ const NAMES = [ 'Катя' , 'ГрЫгорий', 'Лиза', 'Данил', 'Ви
   'Наташа', 'Боба', 'Анжелика', 'Рик', 'Богдан' ];
 
 const PHOTOLENGTH = 25;
-const NUMBERCOMMENT = 1000;
+const NUMBERCOMMENT = 200;
 
 const generateId = getRandomUniqNumber(1, PHOTOLENGTH);
 const generatePhotoId = getRandomUniqNumber(1, PHOTOLENGTH);
