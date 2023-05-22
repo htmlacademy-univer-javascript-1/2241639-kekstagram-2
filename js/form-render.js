@@ -1,7 +1,9 @@
 import {isEscapeKey} from './utils.js';
 import {errorMessage, hashtagsHandler, commentHandler} from './errors.js';
-import {onScaleButtonClick} from './photo-scale.js';
+import {onScaleButtonClick} from './scale.js';
 import {applyEffects, onFilterButtonChange} from './photo-effects.js';
+import {outputData} from './api.js';
+import { renderMessage } from './message.js';
 
 const body = document.querySelector('body');
 const form = document.querySelector('.img-upload__form');
@@ -27,11 +29,14 @@ const pristine = new Pristine(form, {
 const closeUploadPopup  = () => {
   editImg.classList.add('hidden');
   body.classList.remove('modal-open');
-  form.reset();
   document.removeEventListener('keydown', onPopupEscKeydown);
   closeButton.removeEventListener('click', onCloseButtonClick);
   scaleContainer.removeEventListener('click', onScaleButtonClick);
   onEffectListChange.removeEventListener('change', onFilterButtonChange);
+};
+
+const closeUploadPopupDefault  = () => {
+  closeUploadPopup();
   photoPreview.removeAttribute('class');
   photoPreview.removeAttribute('style');
   form.reset();
@@ -39,20 +44,18 @@ const closeUploadPopup  = () => {
 
 function onPopupEscKeydown (evt) {
   if (isEscapeKey(evt)) {
-    closeUploadPopup();
+    closeUploadPopupDefault();
   }
 }
 
 function onCloseButtonClick () {
-  closeUploadPopup();
-  document.removeEventListener('keydown', onPopupEscKeydown);
+  closeUploadPopupDefault();
 }
 
 const addFieldListeners = (field) => {
   field.addEventListener('focus', () => {
     document.removeEventListener('keydown', onPopupEscKeydown);
   });
-
   field.addEventListener('blur', () => {
     document.addEventListener('keydown', onPopupEscKeydown);
   });
@@ -68,7 +71,6 @@ const onImgUploadFieldchange = () => {
   editImg.classList.remove('hidden');
   body.classList.add('modal-open');
   closeButton.addEventListener('click', onCloseButtonClick);
-  document.addEventListener('keydown',onPopupEscKeydown);
   document.addEventListener('keydown', onPopupEscKeydown);
   checkForHidden();
   scaleContainer.addEventListener('click', onScaleButtonClick);
@@ -77,15 +79,30 @@ const onImgUploadFieldchange = () => {
   addFieldListeners(hashtagsField);
   publishButton();
 };
-
 const validateForm = () => {
   pristine.addValidator(hashtagsField, hashtagsHandler, error);
   pristine.addValidator(commentsField, commentHandler, error);
   publishButton();
 };
-
 const onHashtagInput = () => publishButton();
 const onCommentInput = () => publishButton();
+
+const setFormSubmit = (onSuccess, onError) => {
+  form.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    submitButton.disabled = true;
+    outputData(() => {
+      onSuccess();
+      renderMessage(true);
+    },
+    () => {
+      onError();
+      renderMessage();
+    },
+    new FormData(evt.target),
+    );
+  });
+};
 
 const renderUploadForm = () => {
   imgUploadField.addEventListener('change', onImgUploadFieldchange);
@@ -93,6 +110,7 @@ const renderUploadForm = () => {
   commentsField.addEventListener('input', onCommentInput);
   applyEffects();
   validateForm();
+  setFormSubmit(closeUploadPopupDefault, closeUploadPopup);
 };
 
 export {renderUploadForm};

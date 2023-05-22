@@ -1,11 +1,8 @@
-import {createPhotos} from './data.js';
-import {showPhoto} from './miniature.js';
-import {renderUploadForm} from './form.js';
-import {applyEffects} from './photo-effects.js';
+import {indicateError} from './errors.js';
+import {showPhoto} from './miniatures.js';
+import {renderUploadForm} from './form-render.js';
+import {inputData} from './api.js';
 
-
-const photo = createPhotos();
-
-showPhoto(photo);
-renderUploadForm(photo);
-applyEffects(photo);
+inputData((photos) => showPhoto(photos),
+  () => indicateError);
+renderUploadForm();
