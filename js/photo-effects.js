@@ -76,7 +76,7 @@ const Effect = {
       step: 0.1,
     }
   }
-};//эффекты
+};//различные эффекты
 
 const applyEffects = () => {
   noUiSlider.create(slider, {
