@@ -1,4 +1,4 @@
-import {truncate} from './utils.js';
+import {isEscapeKey,truncate} from './utils.js';
 
 const HASHTAG_MAX_LENGTH = 20;
 const HASHTAG_MAX_NUMBER = 5;
@@ -81,7 +81,7 @@ const hashtagsHandler = (string) => {
     }
     return !isInvalid;
   });
-};
+};//обработка хэштегов
 
 const commentHandler = (string) => {
   errorMessage = '';
@@ -103,6 +103,35 @@ const commentHandler = (string) => {
     errorMessage = rule.error;
   }
   return !isInvalid;
+};//обработка коментариев
+
+const errorTemplate = document.querySelector('#error')
+  .content
+  .querySelector('.error');
+
+const closeError = () => {
+  document.querySelector('.error').remove();
 };
 
-export {errorMessage, hashtagsHandler, commentHandler};
+const indicateError = (errorText) => {
+  const errorFragment = document.createDocumentFragment();
+  const errorElement = errorTemplate.cloneNode(true);
+  errorElement.querySelector('.error__title').textContent = errorText;
+
+  errorElement.querySelector('.error__button').addEventListener('click', (evt) => {
+    evt.preventDefault();
+    closeError();
+  }, {once: true});
+
+  document.addEventListener('keydown', (evt) => {
+    if (isEscapeKey(evt)) {
+      evt.preventDefault();
+      closeError();
+    }
+  }, {once: true});
+
+  errorFragment.appendChild(errorElement);
+  document.body.appendChild(errorFragment);
+};
+
+export {errorMessage, hashtagsHandler, commentHandler, indicateError, closeError};
