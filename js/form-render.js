@@ -2,7 +2,7 @@ import {isEscapeKey} from './utils.js';
 import {errorMessage, hashtagsHandler, commentHandler} from './errors.js';
 import {onScaleButtonClick} from './scale.js';
 import {applyEffects, onFilterButtonChange} from './photo-effects.js';
-import {outputData} from './api.js';
+import {sendData} from './api.js';
 import { renderMessage } from './message.js';
 
 const body = document.querySelector('body');
@@ -93,7 +93,7 @@ const setFormSubmit = (onSuccess, onError) => {
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();
     submitButton.disabled = true;
-    outputData(() => {
+    sendData(() => {
       onSuccess();
       renderMessage(true);
     },

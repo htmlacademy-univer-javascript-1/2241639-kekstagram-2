@@ -1,4 +1,4 @@
-const inputData = (onSuccess, onFail) => {
+const getData = (onSuccess, onFail) => {
   fetch('https://26.javascript.pages.academy/kekstagram/data')
     .then((response) => response.json())
     .then((photos) => {
@@ -16,7 +16,7 @@ const inputData = (onSuccess, onFail) => {
     });
 };
 
-const outputData = (onSuccess, onFail, body) => {
+const sendData = (onSuccess, onFail, body) => {
   fetch(
     'https://26.javascript.pages.academy/kekstagram',
     {
@@ -36,4 +36,4 @@ const outputData = (onSuccess, onFail, body) => {
     });
 };
 
-export {inputData, outputData};
+export {getData, sendData};
