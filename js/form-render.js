@@ -79,11 +79,13 @@ const onImgUploadFieldchange = () => {
   addFieldListeners(hashtagsField);
   publishButton();
 };
+
 const validateForm = () => {
   pristine.addValidator(hashtagsField, hashtagsHandler, error);
   pristine.addValidator(commentsField, commentHandler, error);
   publishButton();
 };
+
 const onHashtagInput = () => publishButton();
 const onCommentInput = () => publishButton();
 
