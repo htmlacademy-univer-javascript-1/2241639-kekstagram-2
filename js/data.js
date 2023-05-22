@@ -40,5 +40,5 @@ const createDescriptionOfPhoto = function() {
   };
 };
 
-const numberPhotoUsers = Array.from({ length: PHOTOLENGTH }, createDescriptionOfPhoto);
-export { numberPhotoUsers, createComment, createDescriptionOfPhoto };
+const createPhotos = () => Array.from({length: PHOTOLENGTH}, createDescriptionOfPhoto);
+export { createPhotos , createComment, createDescriptionOfPhoto };
