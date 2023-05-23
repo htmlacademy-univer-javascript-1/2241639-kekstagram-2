@@ -1,7 +1,7 @@
 import {isEscapeKey} from './utils.js';
 import {errorMessage, hashtagsHandler, commentHandler} from './errors.js';
-import {onScaleButtonClick} from './scale.js';
-import {applyEffects, onFilterButtonChange} from './photo-effects.js';
+import {createScaleContainer, removeScaleContainer} from './scale.js';
+import {applyEffects, removeEffects, createSlider} from './photo-effects.js';
 import {sendData} from './api.js';
 import { renderMessage } from './message.js';
 
@@ -13,9 +13,7 @@ const submitButton = document.querySelector('.img-upload__submit');
 const closeButton = form.querySelector('.img-upload__cancel');
 const hashtagsField = form.querySelector('.text__hashtags');
 const commentsField = form.querySelector('.text__description');
-const scaleContainer = document.querySelector('.img-upload__scale');
 const photoPreview = document.querySelector('.img-upload__preview').querySelector('img');
-const onEffectListChange = document.querySelector('.effects__list');
 const sliderWrapper = document.querySelector('.effect-level');
 
 const error = () => errorMessage;
@@ -31,8 +29,9 @@ const closeUploadPopup  = () => {
   body.classList.remove('modal-open');
   document.removeEventListener('keydown', onPopupEscKeydown);
   closeButton.removeEventListener('click', onCloseButtonClick);
-  scaleContainer.removeEventListener('click', onScaleButtonClick);
-  onEffectListChange.removeEventListener('change', onFilterButtonChange);
+  removeScaleContainer();
+  removeEffects();
+  imgUploadField.value = '';
 };
 
 const closeUploadPopupDefault  = () => {
@@ -72,9 +71,10 @@ const onImgUploadFieldchange = () => {
   body.classList.add('modal-open');
   closeButton.addEventListener('click', onCloseButtonClick);
   document.addEventListener('keydown', onPopupEscKeydown);
+
   checkForHidden();
-  scaleContainer.addEventListener('click', onScaleButtonClick);
-  onEffectListChange.addEventListener('change', onFilterButtonChange);
+  applyEffects();
+  createScaleContainer();
   addFieldListeners(commentsField);
   addFieldListeners(hashtagsField);
   publishButton();
@@ -92,17 +92,19 @@ const onCommentInput = () => publishButton();
 const setFormSubmit = (onSuccess, onError) => {
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();
-    submitButton.disabled = true;
-    sendData(() => {
-      onSuccess();
-      renderMessage(true);
-    },
-    () => {
-      onError();
-      renderMessage();
-    },
-    new FormData(evt.target),
-    );
+    if (pristine.validate()) {
+      submitButton.disabled = true;
+      sendData(() => {
+        onSuccess();
+        renderMessage(true);
+      },
+      () => {
+        onError();
+        renderMessage();
+      },
+      new FormData(evt.target),
+      );
+    }
   });
 };
 
@@ -110,7 +112,7 @@ const renderUploadForm = () => {
   imgUploadField.addEventListener('change', onImgUploadFieldchange);
   hashtagsField.addEventListener('input', onHashtagInput);
   commentsField.addEventListener('input', onCommentInput);
-  applyEffects();
+  createSlider();
   validateForm();
   setFormSubmit(closeUploadPopupDefault, closeUploadPopup);
 };
